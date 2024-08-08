@@ -5,32 +5,35 @@ const { errorHandler } = require("../auth.js")
 
 module.exports.checkoutOrders = async (req, res) => {
   try {
-    const { userId } = req.user.id
-    const cart = await Cart.findOne({ userId }).populate("cartItems.productId")
-    console.log(cart)
+    const userId = req.user.id;
+    const cart = await Cart.findOne({ userId }).populate("cartItems.productId");
+    
+    console.log("Cart:", cart);
 
     if (!cart || cart.cartItems.length === 0) {
-      return res.status(404).json({ error: "No items to checkout" })
+      return res.status(404).json({ error: "No items to checkout" });
     }
 
     const order = new Order({
       userId: cart.userId,
       productsOrdered: cart.cartItems,
       totalPrice: cart.totalPrice,
-    })
+    });
 
-    await order.save()
+    await order.save();
 
     // Clear the cart
-    cart.cartItems = []
-    cart.totalPrice = 0
-    await cart.save()
+    cart.cartItems = [];
+    cart.totalPrice = 0;
+    await cart.save();
 
-    res.status(201).json({ message: "Ordered successfully" })
+    res.status(201).json({ message: "Ordered successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Internal server error", error })
+    console.error("Error during checkout:", error);
+    res.status(500).json({ message: "Internal server error", error });
   }
-}
+};
+
 
 module.exports.myOrders = async (req, res) => {
   try {
