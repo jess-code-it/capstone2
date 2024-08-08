@@ -13,14 +13,14 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-const corsOptions = {
-  origin: ["http://localhost:5173"],
+// const corsOptions = {
+//   origin: ["http://localhost:5173"],
 
-  credentials: true,
-  optionsSuccessStatus: 200,
-}
+//   credentials: true,
+//   optionsSuccessStatus: 200,
+// }
 
-app.use(cors(corsOptions))
+app.use(cors())
 mongoose.connect(process.env.MONGODB_STRING, { useNewUrlParser: true, useUnifiedTopology: true });
 app.use("/b1/users", userRoutes);
 app.use("/b1/products", productRoutes);
