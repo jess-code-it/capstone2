@@ -1,5 +1,6 @@
-const Cart = require("../models/Cart.js")
-const Order = require("../models/Order.js")
+const Cart = require("../models/Cart.js");
+const Order = require("../models/Order.js");
+
 module.exports.checkoutOrders = async (req, res) => {
   try {
     const userId = req.user.id;
